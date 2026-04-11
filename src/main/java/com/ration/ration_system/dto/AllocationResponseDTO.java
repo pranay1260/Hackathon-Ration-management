@@ -12,7 +12,9 @@ public class AllocationResponseDTO {
     private int allocationMonth;
     private int allocationYear;
     private Long cardId;
+    private String cardNumber;
     private Long itemId;
+    private String itemName;
     private String status;
     private LocalDateTime createdAt;
 }
