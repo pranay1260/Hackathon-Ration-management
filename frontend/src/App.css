@@ -1,0 +1,202 @@
+/* Premium Student-Style UI for Ration System */
+
+:root {
+  --primary: #4f46e5; /* Modern Indigo */
+  --primary-hover: #4338ca;
+  --success: #10b981;
+  --danger: #ef4444;
+  --light-bg: #f3f4f6;
+  --dark: #111827;
+  --secondary: #6b7280;
+  --border: #e5e7eb;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  background-color: var(--light-bg);
+  color: var(--dark);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+}
+
+/* Centering Logic */
+.App-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Login Page Styles (Centered) */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 420px;
+}
+
+/* Header & Content */
+.main-header {
+  background: white;
+  width: 100%;
+  border-bottom: 1px solid var(--border);
+  padding: 15px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.header-content {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.main-content {
+  width: 100%;
+  max-width: 1100px;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 30px;
+  width: 100%;
+}
+
+/* Card Styling */
+.card-container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+}
+
+.card-container h3 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  color: var(--dark);
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 8px;
+  display: inline-block;
+  margin-bottom: 25px;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+  color: var(--secondary);
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  ring: 2px solid rgba(79, 70, 229, 0.1);
+}
+
+button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.login-btn, button[type="submit"] {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  width: 100%;
+}
+
+.login-btn:hover, button[type="submit"]:hover {
+  background-color: var(--primary-hover);
+}
+
+.logout-btn {
+  background-color: #fee2e2;
+  color: var(--danger);
+  border: 1px solid #fecaca;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+}
+
+/* Table Design */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: var(--secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Badges */
+.badge {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Footer Section */
+.main-footer {
+  margin-top: auto;
+  padding: 30px;
+  text-align: center;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  width: 100%;
+}
