@@ -28,7 +28,7 @@ function CreateItem() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h3>Ration Item Management</h3>
+      <h3>Create New Item Record (Master List)</h3>
       <form onSubmit={submitForm}>
         <div className="form-group">
           <label>Item Name:</label>
@@ -56,7 +56,7 @@ function CreateItem() {
             required
           />
         </div>
-        <button type="submit" style={{ width: '100%', marginTop: '10px' }}>Add Item</button>
+        <button type="submit" style={{ width: '100%', marginTop: '10px' }}>CREATE ITEM (FOR MASTER LIST)</button>
       </form>
       {message && <p style={{ color: message.includes('Error') ? 'red' : 'green', fontWeight: 'bold' }}>{message}</p>}
     </div>

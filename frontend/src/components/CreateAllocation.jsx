@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createAllocation, getAllCards, getAllItems } from '../services/api';
 
-function CreateAllocation() {
+function CreateAllocation({ onAllocationCreated }) {
   const [cardId, setCardId] = useState('');
   const [itemId, setItemId] = useState('');
   const [cards, setCards] = useState([]);
@@ -38,6 +38,7 @@ function CreateAllocation() {
     createAllocation(data)
       .then(res => {
         setMessage(`Allocation Successful! Quantity: ${res.data.allocatedQuantity} KG`);
+        if (onAllocationCreated) onAllocationCreated();
       })
       .catch(err => {
         setMessage('Error creating allocation. Check if Card and Item IDs exist.');
@@ -73,7 +74,7 @@ function CreateAllocation() {
             <option value="">-- Select Item --</option>
             {items.map(item => (
               <option key={item.id} value={item.id}>
-                {item.name} (₹{item.price}/unit)
+                {item.itemName} (₹{item.pricePerUnit}/unit)
               </option>
             ))}
           </select>

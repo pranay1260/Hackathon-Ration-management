@@ -23,14 +23,14 @@ function InventoryTable() {
           </tr>
         </thead>
         <tbody>
-          {items.map(item => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.itemName}</td>
-              <td>{item.quantity}</td>
-              <td>{item.unit}</td>
-            </tr>
-          ))}
+            {items.map(item => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.itemName}</td>
+                <td>{item.quantityAvailable}</td>
+                <td>{item.unitType}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

@@ -70,7 +70,11 @@ public class InventoryService {
         InventoryResponseDTO response = new InventoryResponseDTO();
         response.setId(saved.getId());
         response.setQuantityAvailable(saved.getQuantityAvailable());
-        if (saved.getRationItem() != null) response.setItemId(saved.getRationItem().getId());
+        if (saved.getRationItem() != null) {
+            response.setItemId(saved.getRationItem().getId());
+            response.setItemName(saved.getRationItem().getItemName());
+            response.setUnitType(saved.getRationItem().getUnitType().name());
+        }
         if (saved.getManagedBy() != null) response.setManagerId(saved.getManagedBy().getId());
         response.setStatus(saved.getStatus().name());
         response.setLastUpdated(saved.getLastUpdated());

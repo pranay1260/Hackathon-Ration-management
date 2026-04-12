@@ -10,5 +10,7 @@ public class DistributionResponseDTO {
     private String referenceId;
     private String transactionStatus;
     private Long allocationId;
+    private String cardNumber;
+    private String itemName;
     private LocalDateTime distributionDate; // Re-aligned with service logic
 }

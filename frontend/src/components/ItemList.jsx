@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllItems, updateItemPrice } from '../services/api';
+import { getAllItems, updateItemPrice, getInventory } from '../services/api';
 
 function ItemList() {
   const [items, setItems] = useState([]);
@@ -8,9 +8,17 @@ function ItemList() {
   const [newPrice, setNewPrice] = useState('');
 
   const fetchItems = () => {
-    getAllItems()
-      .then(res => setItems(res.data))
-      .catch(err => console.error('Error fetching items'));
+    Promise.all([getAllItems(), getInventory()])
+      .then(([itemRes, invRes]) => {
+        const itemsWithStock = itemRes.data.map(item => {
+          const totalStock = invRes.data
+            .filter(inv => inv.itemId === item.id)
+            .reduce((sum, inv) => sum + inv.quantityAvailable, 0);
+          return { ...item, totalStock };
+        });
+        setItems(itemsWithStock);
+      })
+      .catch(err => console.error('Error fetching data'));
   };
 
   useEffect(() => {
@@ -46,6 +54,7 @@ function ItemList() {
               <th>ID</th>
               <th>Item Name</th>
               <th>Price</th>
+              <th>Current Stock</th>
               {userRole === 'ADMIN' && <th>Action</th>}
             </tr>
           </thead>
@@ -65,6 +74,9 @@ function ItemList() {
                   ) : (
                     `₹${item.pricePerUnit} / ${item.unitType}`
                   )}
+                </td>
+                <td style={{ fontWeight: 'bold', color: item.totalStock > 10 ? '#2e7d32' : '#c62828' }}>
+                  {item.totalStock} {item.unitType}
                 </td>
                 {userRole === 'ADMIN' && (
                   <td>

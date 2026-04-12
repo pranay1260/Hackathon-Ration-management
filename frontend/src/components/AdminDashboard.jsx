@@ -6,13 +6,24 @@ import CreateItem from './CreateItem';
 import CreateAllocation from './CreateAllocation';
 import InventoryTable from './InventoryTable';
 import TransactionTable from './TransactionTable';
-import UserList from './UserList'; // I will make this simple list if not exists or use UserList
+import UserList from './UserList';
+import AllocationTable from './AllocationTable';
 
 function AdminDashboard() {
   const [cardRefresh, setCardRefresh] = useState(0);
+  const [userRefresh, setUserRefresh] = useState(0);
+  const [allocationRefresh, setAllocationRefresh] = useState(0);
 
   const triggerCardRefresh = () => {
     setCardRefresh(prev => prev + 1);
+  };
+
+  const triggerUserRefresh = () => {
+    setUserRefresh(prev => prev + 1);
+  };
+
+  const triggerAllocationRefresh = () => {
+    setAllocationRefresh(prev => prev + 1);
   };
 
   return (
@@ -24,8 +35,8 @@ function AdminDashboard() {
         {/* 5.1 User Management */}
         <div className="card-container">
           <h4>5.1 User & Role Management</h4>
-          <CreateUser />
-          <UserList /> 
+          <CreateUser onUserCreated={triggerUserRefresh} />
+          <UserList refreshTrigger={userRefresh} /> 
         </div>
 
         {/* 5.2 Beneficiary & Ration Card Management */}
@@ -43,7 +54,11 @@ function AdminDashboard() {
         {/* 5.5 Allocation Management */}
         <div className="card-container">
           <h4>5.5 Monthly Allocation (Auto-Calculate)</h4>
-          <CreateAllocation />
+          <CreateAllocation onAllocationCreated={triggerAllocationRefresh} />
+        </div>
+
+        <div className="card-container" style={{ gridColumn: 'span 2' }}>
+          <AllocationTable refreshTrigger={allocationRefresh} />
         </div>
 
         {/* Tables and Reports */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllUsers } from '../services/api';
 
-function UserList() {
+function UserList({ refreshTrigger }) {
   const [users, setUsers] = useState([]);
   const [roleFilter, setRoleFilter] = useState('ALL');
 
@@ -9,7 +9,7 @@ function UserList() {
     getAllUsers()
       .then(res => setUsers(res.data))
       .catch(err => console.error('Error fetching users'));
-  }, []);
+  }, [refreshTrigger]);
 
   const filteredUsers = roleFilter === 'ALL' 
     ? users 

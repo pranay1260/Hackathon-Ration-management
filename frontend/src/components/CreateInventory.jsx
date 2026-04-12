@@ -96,8 +96,11 @@ function CreateInventory() {
             <option value="OUT_OF_STOCK">OUT OF STOCK</option>
           </select>
         </div>
-        <button type="submit" style={{ width: '100%', marginTop: '10px' }}>UPDATE STOCK (KGs)</button>
+        <button type="submit" style={{ width: '100%', marginTop: '10px', backgroundColor: '#2e7d32' }}>ADD PHYSICAL STOCK (QUANTITY)</button>
       </form>
+      <div style={{ marginTop: '10px', fontSize: '12px', color: '#666' }}>
+        <strong>Note:</strong> This form adds actual kgs/litres to the shop's physical inventory.
+      </div>
       {message && <p style={{ color: message.includes('Error') ? 'red' : 'green', fontWeight: 'bold' }}>{message}</p>}
     </div>
   );

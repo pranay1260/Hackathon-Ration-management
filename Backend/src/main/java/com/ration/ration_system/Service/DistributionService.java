@@ -90,7 +90,15 @@ public class DistributionService {
         response.setId(saved.getId());
         response.setDistributedQuantity(saved.getDistributedQuantity());
         response.setReferenceId(saved.getReferenceId());
-        if (saved.getAllocation() != null) response.setAllocationId(saved.getAllocation().getId());
+        if (saved.getAllocation() != null) {
+            response.setAllocationId(saved.getAllocation().getId());
+            if (saved.getAllocation().getRationCard() != null) {
+                response.setCardNumber(saved.getAllocation().getRationCard().getCardNumber());
+            }
+            if (saved.getAllocation().getRationItem() != null) {
+                response.setItemName(saved.getAllocation().getRationItem().getItemName());
+            }
+        }
         response.setTransactionStatus(saved.getTransactionStatus() != null ? saved.getTransactionStatus().name() : "SUCCESS");
         response.setDistributionDate(saved.getTransactionDate());
         return response;

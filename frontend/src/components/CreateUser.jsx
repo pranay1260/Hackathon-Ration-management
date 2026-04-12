@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { createUser } from '../services/api';
 
-function CreateUser() {
+function CreateUser({ onUserCreated }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('password123');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState('BENEFICIARY');
   const [message, setMessage] = useState('');
 
@@ -18,6 +18,8 @@ function CreateUser() {
         setMessage('User Created Successfully!');
         setName('');
         setEmail('');
+        setPassword('');
+        if (onUserCreated) onUserCreated();
       })
       .catch(error => {
         setMessage('Error creating user. Maybe email already exists?');
@@ -44,6 +46,16 @@ function CreateUser() {
             placeholder="user@example.com" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Initial Password:</label>
+          <input 
+            type="password"
+            placeholder="Min 6 characters" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
             required
           />
         </div>

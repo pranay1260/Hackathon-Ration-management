@@ -28,9 +28,10 @@ function TransactionTable() {
             <tr key={t.id}>
               <td>{t.id}</td>
               <td>{t.allocationId}</td>
+              <td>{t.cardNumber} ({t.itemName})</td>
               <td>{t.distributedQuantity}</td>
               <td>{t.referenceId}</td>
-              <td>{t.distributionDate}</td>
+              <td>{new Date(t.distributionDate).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
