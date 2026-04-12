@@ -41,7 +41,12 @@ function CreateAllocation({ onAllocationCreated }) {
         if (onAllocationCreated) onAllocationCreated();
       })
       .catch(err => {
-        setMessage('Error creating allocation. Check if Card and Item IDs exist.');
+        // Ensure the error message is always a string to prevent React from crashing
+        const rawData = err.response?.data;
+        const errorMsg = (typeof rawData === 'string' ? rawData : rawData?.message) || 
+                         err.message || 
+                         'Error: Allocation failed.';
+        setMessage(String(errorMsg));
       });
   };
 
@@ -101,7 +106,7 @@ function CreateAllocation({ onAllocationCreated }) {
         </div>
         <button type="submit" style={{ width: '100%', marginTop: '10px' }}>Set Allocation</button>
       </form>
-      {message && <p style={{ color: message.includes('Error') ? 'red' : 'green', fontWeight: 'bold' }}>{message}</p>}
+      {message && <p style={{ color: message.toLowerCase().includes('success') ? 'green' : 'red', fontWeight: 'bold' }}>{message}</p>}
     </div>
   );
 }

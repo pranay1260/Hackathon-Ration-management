@@ -58,7 +58,7 @@ function BeneficiaryDashboard({ user }) {
             <thead>
               <tr style={{ backgroundColor: '#f9fafb' }}>
                 <th>Allocation ID</th>
-                <th>Item ID</th>
+                <th>Item</th>
                 <th>Quantity (KG)</th>
                 <th>Month</th>
                 <th>Status</th>
@@ -68,7 +68,7 @@ function BeneficiaryDashboard({ user }) {
               {allocations.map(a => (
                 <tr key={a.id}>
                   <td>{a.id}</td>
-                  <td>{a.itemId}</td>
+                  <td>{a.itemName}</td>
                   <td>{a.allocatedQuantity} KG</td>
                   <td>{a.allocationMonth}/{a.allocationYear}</td>
                   <td>{a.status}</td>

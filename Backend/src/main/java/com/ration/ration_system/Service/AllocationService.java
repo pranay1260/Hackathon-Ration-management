@@ -55,10 +55,17 @@ public class AllocationService {
         Inventory itemInventory = inventoryList.stream()
                 .filter(inv -> inv.getRationItem() != null && inv.getRationItem().getId().equals(item.getId()))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No inventory record for this item"));
+                .orElseGet(() -> {
+                    // SELF-HEALING: Create missing inventory record with 0 stock
+                    Inventory newInv = new Inventory();
+                    newInv.setRationItem(item);
+                    newInv.setQuantityAvailable(0);
+                    newInv.setStatus(Inventory.Status.OUT_OF_STOCK);
+                    return inventoryRepository.save(newInv);
+                });
 
-        if (itemInventory.getStatus() == Inventory.Status.OUT_OF_STOCK) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Inventory for this item is OUT_OF_STOCK");
+        if (itemInventory.getQuantityAvailable() <= 0 || itemInventory.getStatus() == Inventory.Status.OUT_OF_STOCK) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot allocate: Item '" + item.getItemName() + "' is OUT OF STOCK. Please add stock in Inventory Management.");
         }
 
         // SYSTEM MUST: Calculate allocation quantity (Section 5.5 / Section 6)
