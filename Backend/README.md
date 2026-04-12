@@ -1,10 +1,7 @@
 # Ration Distribution System (Backend)
-
 ## Overview
-
 This project is a backend system for managing ration distribution.
 It is designed to help authorities manage users, ration cards, inventory, allocation of items, and distribution process.
-
 The system follows a proper workflow so that ration is distributed only when all required conditions are satisfied.
 ---
 ## Features

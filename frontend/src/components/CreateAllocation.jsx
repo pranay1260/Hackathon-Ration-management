@@ -64,7 +64,7 @@ function CreateAllocation({ onAllocationCreated }) {
             <option value="">-- Select Active Card --</option>
             {cards.map(c => (
               <option key={c.id} value={c.id}>
-                {c.cardNumber} ({c.cardType})
+                {c.cardNumber} ({c.cardType} - {c.familySize} Members)
               </option>
             ))}
           </select>
@@ -93,16 +93,19 @@ function CreateAllocation({ onAllocationCreated }) {
             readOnly
             style={{ backgroundColor: '#f0f0f0', cursor: 'not-allowed' }}
           />
-          <small style={{ color: '#666' }}>Quantity is based on Card Type & Family Size</small>
+          <small style={{ color: '#0056b3', fontWeight: 'bold' }}>
+            Quantity is automatically calculated based on Card Type & Total Family Members
+          </small>
         </div>
         <div className="form-group">
-          <label>Month (1-12):</label>
+          <label>Allocation Month (1-12):</label>
           <input 
             type="number"
             min="1" max="12"
             value={month} 
             onChange={(e) => setMonth(e.target.value)} 
           />
+          <small style={{ color: '#666' }}>Select which month's ration is being issued (Monthly Rule)</small>
         </div>
         <button type="submit" style={{ width: '100%', marginTop: '10px' }}>Set Allocation</button>
       </form>

@@ -19,6 +19,8 @@ function AllocationTable({ refreshTrigger }) {
             <tr>
               <th>ID</th>
               <th>Card Number</th>
+              <th>Type</th>
+              <th>Members</th>
               <th>Item</th>
               <th>Qty (KG)</th>
               <th>Period</th>
@@ -33,6 +35,8 @@ function AllocationTable({ refreshTrigger }) {
                 <tr key={a.id}>
                   <td>{a.id}</td>
                   <td>{a.cardNumber}</td>
+                  <td>{a.cardType}</td>
+                  <td>{a.familySize}</td>
                   <td>{a.itemName}</td>
                   <td>{a.allocatedQuantity}</td>
                   <td>{a.allocationMonth}/{a.allocationYear}</td>

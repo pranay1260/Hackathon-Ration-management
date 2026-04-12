@@ -42,6 +42,13 @@ public class AllocationService {
         RationCard card = rationCardRepository.findById(dto.getCardId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Card not found"));
 
+        // RULE: Allocation must be MONTHLY (Only once per card/item/month)
+        allocationRepository.findByRationCardIdAndRationItemIdAndAllocationMonthAndAllocationYear(
+                dto.getCardId(), dto.getItemId(), dto.getAllocationMonth(), dto.getAllocationYear())
+                .ifPresent(a -> {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Allocation for this item has already been done for this period.");
+                });
+
         // RULE: Ration card must be ACTIVE for allocation (Section 6)
         if (card.getStatus() != RationCard.CardStatus.ACTIVE) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Card is not ACTIVE. Status: " + card.getStatus());
@@ -68,16 +75,55 @@ public class AllocationService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot allocate: Item '" + item.getItemName() + "' is OUT OF STOCK. Please add stock in Inventory Management.");
         }
 
-        // SYSTEM MUST: Calculate allocation quantity (Section 5.5 / Section 6)
+        // SYSTEM MUST: Calculate allocation quantity based on Eligibility Matrix (Section 5.5 / Section 6)
         int calculatedQuantity = 0;
         int familySize = card.getFamilySize() > 0 ? card.getFamilySize() : 1;
+        String name = item.getItemName().trim().toLowerCase();
+        RationCard.CardType type = card.getCardType();
 
-        if (card.getCardType() == RationCard.CardType.APL) {
-            calculatedQuantity = 5 * familySize;
-        } else if (card.getCardType() == RationCard.CardType.BPL) {
-            calculatedQuantity = 10 * familySize;
-        } else if (card.getCardType() == RationCard.CardType.AAY) {
-            calculatedQuantity = 20; // 20 KG per family flat
+        // 1. CEREALS (Rice / Wheat) - Calculated PER MEMBER
+        if (name.contains("rice")) {
+            if (type == RationCard.CardType.AAY) {
+                calculatedQuantity = 35; // Flat per AAY family
+            } else if (type == RationCard.CardType.BPL) {
+                calculatedQuantity = 10 * familySize; 
+            } else {
+                calculatedQuantity = 5 * familySize;
+            }
+        } 
+        else if (name.contains("wheat")) {
+            if (type == RationCard.CardType.AAY) {
+                calculatedQuantity = 0; // AAY get Rice only
+            } else if (type == RationCard.CardType.BPL) {
+                calculatedQuantity = 5 * familySize;
+            } else {
+                calculatedQuantity = 3 * familySize;
+            }
+        }
+        // 2. SUBSIDIZED EXCLUSIVES (Sugar / Kerosene) - Calculated PER FAMILY (Flat)
+        else if (name.contains("sugar")) {
+            if (type == RationCard.CardType.APL) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "APL (White Card) holders are not eligible for subsidized Sugar.");
+            }
+            calculatedQuantity = 1; // 1 KG Flat
+        }
+        else if (name.contains("kerosene")) {
+            if (type == RationCard.CardType.APL) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "APL holders are not eligible for Kerosene.");
+            }
+            calculatedQuantity = (type == RationCard.CardType.AAY) ? 5 : 3; // Ltrs
+        }
+        // 3. OTHERS (Oil / Powder etc.) - Calculated PER FAMILY (Flat)
+        else if (name.contains("oil")) {
+            calculatedQuantity = 1; // 1 Ltr Flat
+        }
+        else {
+            calculatedQuantity = 1; // Default
+        }
+
+        // Final check: If after all rules quantity is 0, it means ineligible (except specifically handled cases)
+        if (calculatedQuantity <= 0 && !name.contains("wheat")) {
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Zero eligibility for " + item.getItemName() + " on " + type + " card.");
         }
 
         Allocation allocation = new Allocation();
@@ -115,6 +161,8 @@ public class AllocationService {
         if (saved.getRationCard() != null) {
             response.setCardId(saved.getRationCard().getId());
             response.setCardNumber(saved.getRationCard().getCardNumber());
+            response.setCardType(saved.getRationCard().getCardType().name());
+            response.setFamilySize(saved.getRationCard().getFamilySize());
         }
         if (saved.getRationItem() != null) {
             response.setItemId(saved.getRationItem().getId());

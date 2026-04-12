@@ -1,12 +1,8 @@
 package com.ration.ration_system.dto;
-
 import lombok.Data;
-
 import java.time.LocalDateTime;
-
 @Data
 public class InventoryResponseDTO {
-
     private Long id;
     private int quantityAvailable;
     private Long itemId;

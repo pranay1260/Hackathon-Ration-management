@@ -8,7 +8,6 @@ function BeneficiaryAllocations({ userId }) {
   useEffect(() => {
     if (userId) {
       setLoading(true);
-      // First find the card, then get allocations
       getCardsByUserId(userId)
         .then(res => {
           if (res.data.length > 0) {

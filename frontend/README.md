@@ -1,16 +1,32 @@
-# React + Vite
+# Ration Distribution System - Frontend
+This is the React-based frontend for the Ration Distribution System. It's built using **Vite** for fast development and **Axios** for API communication with the Spring Boot backend.
+## Key Features
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+I've implemented a full role-based access control (RBAC) system to ensure security and proper workflow:
+### 1. Admin Dashboard (Master Control)
+- **User Management**: Add new users (Admin/Manager/Beneficiary) and manage login credentials.
+- **Ration Card Issuance**: Create digital ration cards with family size and category (APL, BPL, AAY).
+- **Auto-Allocation Engine**: A smart system that calculates monthly ration based on family size and card status.
+- **Eligibility Guard**: Prevents APL users from selecting subsidized goods like Sugar or Kerosene.
+- **Reports**: View all allocations and transactions in real-time.
+### 2. Shop Manager Dashboard
+- **Inventory Control**: Update physical stock received at the ration shop.
+- **Distribution Processing**: Hand over ration to beneficiaries after validating their allocation.
+- **Stock Depletion**: Automatically reduces the shop's inventory when a distribution is completed.
 
-Currently, two official plugins are available:
+### 3. Beneficiary Dashboard
+- **Personal Card View**: Users can check their card type and status.
+- **Allocation Status**: Check what items are ready for pickup this month.
+- **Transaction History**: View all previous ration receipts and reference IDs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🛠️ Tech Stack
+- **Framework**: React 18+
+- **Build Tool**: Vite
+- **Styling**: Standard CSS (Custom cards and layout)
+- **State Management**: React Hooks (useState, useEffect)
+- **Navigation**: Conditional rendering based on user session roles
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📂 Folder Structure
+- `/src/components`: All UI modules (Dashboards, Tables, Forms)
+- `/src/services`: API configuration and Axios calls
+- `/src/App.jsx`: Main entry point with session persistence and role-routing

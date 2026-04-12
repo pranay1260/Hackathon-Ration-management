@@ -1,8 +1,6 @@
 package com.ration.ration_system.dto;
-
 import lombok.Data;
 import java.time.LocalDateTime;
-
 @Data
 public class DistributionResponseDTO {
     private Long id;
