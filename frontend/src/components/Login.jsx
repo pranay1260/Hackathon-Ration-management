@@ -6,35 +6,63 @@ function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [role, setRole] = useState('BENEFICIARY'); // Still needed for registration
   const [error, setError] = useState('');
+
+  const validate = () => {
+    // 1. EMAIL VALIDATION (Strict: No leading symbols, proper domain)
+    const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(email) || email.startsWith('-')) {
+      setError('Error: Please enter a valid email (e.g., alex@mail.com). Cannot start with symbols.');
+      return false;
+    }
+
+    if (isRegister) {
+      // 2. NAME VALIDATION (Letters and spaces only)
+      const nameRegex = /^[a-zA-Z\s]{3,50}$/;
+      if (!nameRegex.test(username)) {
+        setError('Error: Name must be 3-50 characters and contain ONLY letters.');
+        return false;
+      }
+      // 3. PHONE VALIDATION
+      const phoneRegex = /^\d{10}$/;
+      if (!phoneRegex.test(phoneNumber)) {
+        setError('Error: Phone number must be exactly 10 digits.');
+        return false;
+      }
+      // 4. PASSWORD VALIDATION (No spaces, min 6)
+      if (password.length < 6 || password.includes(' ')) {
+        setError('Error: Password must be 6+ characters and cannot contain spaces.');
+        return false;
+      }
+    }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    if (!validate()) return;
     
     try {
       if (isRegister) {
-        // REGISTER: Needs Name, Email, Password, AND Role
         await createUser({ 
           name: username, 
           email: email, 
           password: password, 
           role: role, 
-          phoneNumber: '0000000000' 
+          phoneNumber: phoneNumber 
         });
-        alert('Registration Successful! Use your Email to log in.');
+        alert('Success! Registration complete. You can now Login.');
         setIsRegister(false);
       } else {
-        // LOGIN: Just Email and Password
         const response = await login({ email: email, password: password });
         onLogin(response.data);
-        alert('Login Successful!');
       }
     } catch (err) {
       const backendMessage = err.response?.data?.message;
-      setError(backendMessage || 'Verification failed. Register first or check credentials.');
-      console.error(err);
+      setError(backendMessage || 'Action failed. Check credentials or connection.');
     }
   };
 
@@ -73,6 +101,19 @@ function Login({ onLogin }) {
               required
             />
           </div>
+
+          {isRegister && (
+            <div className="form-group">
+              <label>Phone Number:</label>
+              <input 
+                type="tel" 
+                placeholder="10 digit mobile" 
+                value={phoneNumber} 
+                onChange={(e) => setPhoneNumber(e.target.value)} 
+                required
+              />
+            </div>
+          )}
 
           <div className="form-group">
             <label>Password:</label>

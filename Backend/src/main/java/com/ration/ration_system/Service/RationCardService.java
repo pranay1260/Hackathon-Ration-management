@@ -1,5 +1,4 @@
 package com.ration.ration_system.Service;
-
 import com.ration.ration_system.dto.RationCardRequestDTO;
 import com.ration.ration_system.dto.RationCardResponseDTO;
 import com.ration.ration_system.entity.RationCard;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class RationCardService {
 
@@ -37,8 +35,6 @@ public class RationCardService {
                     System.err.println("FAILED: User ID " + dto.getUserId() + " not found in DB");
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
                 });
-
-        // RULE: Each beneficiary can have only one ration card (Section 6)
         boolean hasCard = rationCardRepository.findAll().stream()
                 .anyMatch(c -> c.getUser() != null && c.getUser().getId().equals(user.getId()));
         

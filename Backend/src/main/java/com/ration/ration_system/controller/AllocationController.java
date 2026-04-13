@@ -5,6 +5,7 @@ import com.ration.ration_system.Service.AllocationService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
+@CrossOrigin
 @RequestMapping("/allocations")
 public class AllocationController {
     private final AllocationService allocationService;

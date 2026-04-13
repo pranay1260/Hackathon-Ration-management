@@ -6,6 +6,7 @@ import com.ration.ration_system.Service.UserService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
+@CrossOrigin
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
@@ -18,7 +19,6 @@ public class UserController {
     }
     @PostMapping("/login")
     public UserResponseDTO login(@RequestBody UserRequestDTO dto) {
-        // Simplified Login: Just Email and Password
         return userService.login(dto.getEmail(), dto.getPassword());
     }
 

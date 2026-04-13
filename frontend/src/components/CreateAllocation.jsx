@@ -24,8 +24,28 @@ function CreateAllocation({ onAllocationCreated }) {
       .catch(err => console.error('Error fetching items'));
   }, []);
 
+  const validate = () => {
+    if (!cardId || !itemId) {
+      setMessage('Error: Select both a Ration Card and an Item.');
+      return false;
+    }
+    const m = parseInt(month);
+    const y = parseInt(year);
+    if (isNaN(m) || m < 1 || m > 12) {
+      setMessage('Error: Month must be between 1 and 12.');
+      return false;
+    }
+    if (isNaN(y) || y < 2024 || y > 2030) {
+      setMessage('Error: Year must be between 2024 and 2030.');
+      return false;
+    }
+    return true;
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
+    if (!validate()) return;
+
     const data = { 
       cardId: parseInt(cardId), 
       itemId: parseInt(itemId), 
@@ -37,15 +57,11 @@ function CreateAllocation({ onAllocationCreated }) {
     
     createAllocation(data)
       .then(res => {
-        setMessage(`Allocation Successful! Quantity: ${res.data.allocatedQuantity} KG`);
+        setMessage(`SUCCESS: Allocation Set! Qty: ${res.data.allocatedQuantity} KG`);
         if (onAllocationCreated) onAllocationCreated();
       })
       .catch(err => {
-        // Ensure the error message is always a string to prevent React from crashing
-        const rawData = err.response?.data;
-        const errorMsg = (typeof rawData === 'string' ? rawData : rawData?.message) || 
-                         err.message || 
-                         'Error: Allocation failed.';
+        const errorMsg = err.response?.data?.message || 'Error: Process failed. Check stock or duplicates.';
         setMessage(String(errorMsg));
       });
   };

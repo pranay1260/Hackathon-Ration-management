@@ -5,6 +5,7 @@ import com.ration.ration_system.Service.RationCardService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
+@CrossOrigin
 @RequestMapping("/cards")
 public class RationCardController {
     private final RationCardService rationCardService;

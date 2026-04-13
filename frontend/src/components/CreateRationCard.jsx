@@ -22,8 +22,32 @@ function CreateRationCard({ onCardCreated }) {
       .catch(err => console.error('Error fetching users'));
   }, []);
 
+  const validate = () => {
+    if (!userId) {
+      setMessage('Error: Please select a beneficiary.');
+      return false;
+    }
+    const cardRegex = /^[a-zA-Z0-9-]{5,20}$/;
+    if (!cardRegex.test(cardNumber)) {
+      setMessage('Error: Card Number must be 5-20 characters (letters, numbers, and hyphens only).');
+      return false;
+    }
+    const size = parseInt(familySize);
+    if (isNaN(size) || size < 1 || size > 25) {
+      setMessage('Error: Family size must be between 1 and 25.');
+      return false;
+    }
+    if (new Date(issueDate) > new Date(expiryDate)) {
+      setMessage('Error: Expiry date cannot be before the Issue date.');
+      return false;
+    }
+    return true;
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
+    if (!validate()) return;
+
     const data = { 
       userId: parseInt(userId), 
       cardNumber, 
@@ -36,15 +60,15 @@ function CreateRationCard({ onCardCreated }) {
     
     createCard(data)
       .then(res => {
-        setMessage('Card Created Successfully!');
-        // CALLING THE CALLBACK TO REFRESH TABLE
+        setMessage('SUCCESS: Ration Card Issued!');
         if (onCardCreated) onCardCreated();
-        // Clear inputs
         setUserId('');
         setCardNumber('');
+        setFamilySize('1');
       })
       .catch(err => {
-        setMessage('Error creating card. Ensure User ID exists.');
+        const errorMsg = err.response?.data?.message || 'Error: Could not issue card. User may already have one.';
+        setMessage(errorMsg);
       });
   };
 

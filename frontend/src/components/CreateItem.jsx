@@ -7,22 +7,33 @@ function CreateItem() {
   const [pricePerUnit, setPricePerUnit] = useState('');
   const [message, setMessage] = useState('');
 
+  const validate = () => {
+    if (itemName.trim().length < 2) {
+      setMessage('Error: Item Name must be at least 2 letters.');
+      return false;
+    }
+    const rate = parseFloat(pricePerUnit);
+    if (isNaN(rate) || rate <= 0) {
+      setMessage('Error: Price must be a positive number.');
+      return false;
+    }
+    return true;
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
-    const data = { 
-      itemName, 
-      unitType, 
-      pricePerUnit: parseFloat(pricePerUnit) || 0 
-    };
+    if (!validate()) return;
+
+    const data = { itemName, unitType, pricePerUnit: parseFloat(pricePerUnit) };
     
     createItem(data)
       .then(res => {
-        setMessage('Item Created Successfully!');
+        setMessage('SUCCESS: Ration Item Added.');
         setItemName('');
         setPricePerUnit('');
       })
       .catch(err => {
-        setMessage('Error creating item. Ensure all fields are filled.');
+        setMessage('Error: Item might already exist or server is down.');
       });
   };
 

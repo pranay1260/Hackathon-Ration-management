@@ -18,8 +18,23 @@ function Distribution() {
       .catch(err => console.error('Error fetching allocations'));
   }, []);
 
+  const validate = () => {
+    if (!allocationId) {
+      setMessage('Error: Please select an allocation to distribute.');
+      return false;
+    }
+    const qty = parseFloat(distributedQuantity);
+    if (isNaN(qty) || qty <= 0) {
+      setMessage('Error: Distributed quantity must be a positive number.');
+      return false;
+    }
+    return true;
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
+    if (!validate()) return;
+    
     const data = { 
       allocationId: parseInt(allocationId), 
       distributedQuantity: parseFloat(distributedQuantity), 
@@ -28,10 +43,10 @@ function Distribution() {
     
     distribute(data)
       .then(res => {
-        setMessage('SUCCESS: Ration Distributed');
+        setMessage('SUCCESS: Ration Distributed & Stock Updated.');
       })
       .catch(err => {
-        const errorMsg = err.response?.data?.message || 'FAILED: Check Allocation ID or Stock';
+        const errorMsg = err.response?.data?.message || 'Error: Distribution failed. Check physical stock.';
         setMessage(errorMsg);
       });
   };

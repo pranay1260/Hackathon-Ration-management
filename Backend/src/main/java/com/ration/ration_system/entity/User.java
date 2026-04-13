@@ -19,7 +19,6 @@ public class User {
     public void setCreatedAt() {
         this.createdAt = LocalDateTime.now();
     }
-
     public enum Role {
         ADMIN,
         SHOP_MANAGER,

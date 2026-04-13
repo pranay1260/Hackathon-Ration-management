@@ -46,8 +46,6 @@ public class InventoryService {
         inventory.setQuantityAvailable(dto.getQuantityAvailable());
         inventory.setRationItem(item);
         inventory.setManagedBy(manager);
-        
-        // SYSTEM MUST: Automatically update inventory status (Section 5.4)
         if (dto.getQuantityAvailable() <= 0) {
             inventory.setStatus(Inventory.Status.OUT_OF_STOCK);
         } else if (dto.getQuantityAvailable() < 10) {
@@ -55,7 +53,6 @@ public class InventoryService {
         } else {
             inventory.setStatus(Inventory.Status.AVAILABLE);
         }
-
         Inventory saved = inventoryRepository.save(inventory);
         return mapToResponse(saved);
     }

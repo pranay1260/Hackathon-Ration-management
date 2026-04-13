@@ -5,6 +5,7 @@ import com.ration.ration_system.Service.DistributionService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
+@CrossOrigin
 @RequestMapping("/distribution")
 public class DistributionController {
     private final DistributionService distributionService;

@@ -15,10 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class AllocationService {
-
     private final AllocationRepository allocationRepository;
     private final RationCardRepository rationCardRepository;
     private final RationItemRepository rationItemRepository;
@@ -75,7 +73,7 @@ public class AllocationService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot allocate: Item '" + item.getItemName() + "' is OUT OF STOCK. Please add stock in Inventory Management.");
         }
 
-        // SYSTEM MUST: Calculate allocation quantity based on Eligibility Matrix (Section 5.5 / Section 6)
+
         int calculatedQuantity = 0;
         int familySize = card.getFamilySize() > 0 ? card.getFamilySize() : 1;
         String name = item.getItemName().trim().toLowerCase();
@@ -125,7 +123,6 @@ public class AllocationService {
         if (calculatedQuantity <= 0 && !name.contains("wheat")) {
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Zero eligibility for " + item.getItemName() + " on " + type + " card.");
         }
-
         Allocation allocation = new Allocation();
         allocation.setAllocatedQuantity(calculatedQuantity);
         allocation.setAllocationMonth(dto.getAllocationMonth());

@@ -9,16 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     public UserResponseDTO createUser(UserRequestDTO dto) {
         User user = new User();
         user.setName(dto.getName());
@@ -36,9 +32,7 @@ public class UserService {
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
-
     public UserResponseDTO login(String email, String password) {
-        // Find user by EMAIL only (Simplified Login)
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Account not found with this email"));
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createInventory, getAllItems, getAllUsers } from '../services/api';
 
-function CreateInventory() {
+function CreateInventory({ onInventoryUpdated }) {
   const [itemId, setItemId] = useState('');
   const [managerId, setManagerId] = useState('');
   const [items, setItems] = useState([]);
@@ -23,24 +23,41 @@ function CreateInventory() {
       .catch(err => console.error('Error fetching users'));
   }, []);
 
+  const validate = () => {
+    if (!itemId) {
+      setMessage('Error: Please select an item to update stock.');
+      return false;
+    }
+    if (!managerId) {
+      setMessage('Error: Please select a manager.');
+      return false;
+    }
+    const qty = parseInt(quantityAvailable);
+    if (isNaN(qty) || qty < 0) {
+      setMessage('Error: Stock quantity cannot be negative.');
+      return false;
+    }
+    return true;
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
+    if (!validate()) return;
+
     const data = { 
       itemId: parseInt(itemId), 
-      managerId: parseInt(managerId), 
       quantityAvailable: parseInt(quantityAvailable), 
-      status 
+      managerId: parseInt(managerId),
+      status: status
     };
     
     createInventory(data)
       .then(res => {
-        setMessage('Inventory Updated Successfully!');
-        setItemId('');
-        setManagerId('');
-        setQuantityAvailable('');
+        setMessage('SUCCESS: Stock Catalog Updated.');
+        if (onInventoryUpdated) onInventoryUpdated();
       })
       .catch(err => {
-        setMessage('Error updating inventory. Ensure IDs are correct.');
+        setMessage('Error: Could not update inventory.');
       });
   };
 

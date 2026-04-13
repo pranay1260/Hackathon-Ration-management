@@ -6,6 +6,7 @@ import com.ration.ration_system.Service.InventoryService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
+@CrossOrigin
 @RequestMapping("/inventory")
 public class InventoryController {
     private final InventoryService inventoryService;

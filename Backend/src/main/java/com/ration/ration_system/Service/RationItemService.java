@@ -10,13 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class RationItemService {
-
     private final RationItemRepository rationItemRepository;
     private final InventoryRepository inventoryRepository;
-
     public RationItemService(RationItemRepository rationItemRepository, InventoryRepository inventoryRepository) {
         this.rationItemRepository = rationItemRepository;
         this.inventoryRepository = inventoryRepository;
@@ -28,19 +25,14 @@ public class RationItemService {
         item.setItemName(dto.getItemName());
         item.setUnitType(RationItem.UnitType.valueOf(dto.getUnitType()));
         item.setPricePerUnit(dto.getPricePerUnit());
-
         RationItem saved = rationItemRepository.save(item);
-
-        // AUTO-INIT: Create an empty inventory record so the Allocation system doesn't error out
         Inventory inventory = new Inventory();
         inventory.setRationItem(saved);
         inventory.setQuantityAvailable(0);
         inventory.setStatus(Inventory.Status.OUT_OF_STOCK);
         inventoryRepository.save(inventory);
-
         return mapToResponse(saved);
     }
-
     public List<RationItemResponseDTO> getAllItems() {
         return rationItemRepository.findAll().stream()
                 .map(this::mapToResponse)
