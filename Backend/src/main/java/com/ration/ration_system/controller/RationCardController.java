@@ -11,7 +11,7 @@ public class RationCardController {
     private final RationCardService rationCardService;
     public RationCardController(RationCardService rationCardService) {
         this.rationCardService = rationCardService;
-    }
+    } 
     @PostMapping
     public RationCardResponseDTO createCard(@RequestBody RationCardRequestDTO dto) {
         return rationCardService.createRationCard(dto);
