@@ -17,7 +17,7 @@ function Distribution() {
       })
       .catch(err => console.error('Error fetching allocations'));
   }, []);
-
+  
   const validate = () => {
     if (!allocationId) {
       setMessage('Error: Please select an allocation to distribute.');

@@ -11,16 +11,20 @@ export const login = (data) => api.post('/users/login', data);
 export const getAllUsers = () => api.get('/users');
 export const getUserById = (id) => api.get(`/users/${id}`);
 
+
 // Card APIs
 export const createCard = (data) => api.post('/cards', data);
 export const getAllCards = () => api.get('/cards');
 export const getCardsByUserId = (userId) => api.get(`/cards/user/${userId}`);
 export const updateCardStatus = (id, status) => api.patch(`/cards/${id}/status`, { status });
 
+
+
 // Item APIs
 export const createItem = (data) => api.post('/items', data);
 export const getAllItems = () => api.get('/items');
 export const updateItemPrice = (id, pricePerUnit) => api.patch(`/items/${id}/price`, { pricePerUnit });
+
 
 // Inventory APIs
 export const createInventory = (data) => api.post('/inventory', data);

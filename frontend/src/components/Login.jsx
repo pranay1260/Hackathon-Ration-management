@@ -17,7 +17,7 @@ function Login({ onLogin }) {
       setError('Error: Please enter a valid email (e.g., alex@mail.com). Cannot start with symbols.');
       return false;
     }
-
+    
     if (isRegister) {
       // 2. NAME VALIDATION (Letters and spaces only)
       const nameRegex = /^[a-zA-Z\s]{3,50}$/;
